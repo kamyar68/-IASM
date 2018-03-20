@@ -27,6 +27,16 @@ output= arcpy.GetParameterAsText(2)
 poibufd= arcpy.GetParameter(3)
 # buffer around home points (500 m by default, according to Hasanzadeh,2017)
 hombufd= arcpy.GetParameter(4)
+#Do you want to apply home range distance (d3) threshold?
+apply_d3=arcpy.GetParameter(5)
+# d3 value  (home range distance)
+d3=arcpy.GetParameter(6)
+## apply d3 (if True)- filter points
+if apply_d3==1:
+    poi_filtered=r'in_memory/poifiltered'
+    delimfield = arcpy.AddFieldDelimiters(poif, 'dist')
+    arcpy.Select_analysis(poif, poi_filtered, "{0} <= {1}".format(delimfield, d3))
+    poif=poi_filtered
 ## Main functionalities
 # applying buffer around home and activity points
 arcpy.Buffer_analysis(home, 'bufhom', hombufd, "FULL", "ROUND", "NONE", "", "PLANAR")
@@ -51,7 +61,7 @@ for row in cursor3:
     # this makes sure that the field uid exists in the newly created file (the convex hull)
     if len(arcpy.ListFields('mcp',"uid"))==0:
         arcpy.AddField_management ('mcp', "uid", "LONG", "#", "#", "#", "#", "NULLABLE", "REQUIRED", '#')
-        arcpy.CalculateField_management ('mcp', 'uid', u)
+    arcpy.CalculateField_management ('mcp', 'uid', u)
         # append the individual home range to the temporary output file in memory
     arcpy.Append_management ('mcp', 'tempnb', 'NO_TEST', '#', '#')
 del row, cursor3
