@@ -336,7 +336,7 @@ for row in rows:
     arcpy.SetProgressorLabel("Creating AS raster for user %u ..."%u)
     arcpy.AddMessage( "Creating IREM for user %u"%u) 
     progress=(float(u)/float(fc_count))*100.0
-    arcpy.AddMessage( "%x percent completed"%progress)
+    #arcpy.AddMessage( "%x percent completed"%progress)
     print u
     # make selections individual by individual using uid
     delimfield = arcpy.AddFieldDelimiters(home, 'uid')

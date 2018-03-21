@@ -49,6 +49,7 @@ for inRaster in rasters:
     uid=int(inRaster .rsplit('_', 1)[1])
     print uid
     arcpy.AddMessage( "start creating boundaries for uid %u"%uid)
+    #determine pixel value using percentile
     array = arcpy.RasterToNumPyArray(inRaster, nodata_to_value = 0)
     a=array.flatten()
     b=numpy.trim_zeros(a)
